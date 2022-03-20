@@ -1,0 +1,31 @@
+version: '3.2'
+
+services:
+  apache:
+    image: httpd:2.4
+    volumes:
+      - ./server:/usr/local/apache2/htdocs
+    ports:
+      - "1234:80"
+  sql_base:
+    container_name: sql_base2
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_DATABASE: main
+      MYSQL_USER: NekiyNekit
+      MYSQL_PASSWORD: Nikita_228_
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "8000:8000"
+  phpadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "1235:80"
+    restart: always
+    environment:
+      PMA_HOST: sql_base
+    depends_on:
+      - sql_base
